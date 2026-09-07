@@ -142,7 +142,7 @@ export class GameScene extends Phaser.Scene {
   private spawnItem(): void {
     const def = Phaser.Utils.Array.GetRandom(this.topic.items) as Item;
     const x = Phaser.Math.Between(40, GAME_WIDTH - 40);
-    const item = this.add.text(x, -40, def.emoji, { fontSize: '44px' }).setOrigin(0.5);
+    const item = this.add.text(x, -40, def.emoji, { fontSize: '44px', padding: { x: 6, y: 6 } }).setOrigin(0.5);
     item.setData('correct', def.correct);
     item.setData('label', def.label);
     this.items.add(item);
