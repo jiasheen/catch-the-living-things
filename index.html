@@ -1,0 +1,25 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <!-- viewport-fit=cover for edge-to-edge on phones; zoom is intentionally
+         left enabled for accessibility (the canvas itself opts out of gestures). -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+    <meta name="description" content="Catch the Living Things — a data-driven arcade sorting game for K-12 classrooms." />
+    <meta name="theme-color" content="#8fd6ff" />
+    <link rel="icon" type="image/svg+xml" href="%BASE_URL%favicon.svg" />
+    <title>Catch the Living Things</title>
+  </head>
+  <body>
+    <div id="app">
+      <!-- Phaser injects the game canvas here. -->
+      <div id="game"></div>
+      <!-- Accessible HTML/CSS overlay (HUD, menus, results), animated by GSAP.
+           It sits above the canvas but lets pointer events fall through to the
+           game except on real buttons and full-screen menus. -->
+      <div id="ui"></div>
+    </div>
+    <noscript>This game needs JavaScript enabled to play.</noscript>
+    <script type="module" src="/src/main.ts"></script>
+  </body>
+</html>

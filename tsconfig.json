@@ -1,0 +1,29 @@
+{
+  "compilerOptions": {
+    /* Modern output that all evergreen browsers (and classroom Chromebooks) support. */
+    "target": "ES2020",
+    "module": "ESNext",
+    "moduleResolution": "bundler",
+    "lib": ["ES2020", "DOM", "DOM.Iterable"],
+    "useDefineForClassFields": true,
+
+    /* Strictness — catches bugs before they ship. The CI build runs `tsc --noEmit`,
+       so a type error fails the deploy rather than reaching students. */
+    "strict": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "noFallthroughCasesInSwitch": true,
+    "noImplicitReturns": true,
+
+    /* Vite compiles each file in isolation, so these keep us honest. */
+    "isolatedModules": true,
+    "verbatimModuleSyntax": true,
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "resolveJsonModule": true,
+
+    /* We never emit from tsc; Vite/esbuild does the transpiling. */
+    "noEmit": true
+  },
+  "include": ["src", "vite.config.ts"]
+}

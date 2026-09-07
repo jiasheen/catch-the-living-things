@@ -1,0 +1,430 @@
+/*
+ * Styles for the HTML overlay. The Phaser canvas draws the gameplay; everything
+ * here is the UI layered on top. Palette mirrors src/ui/theme.ts.
+ */
+
+:root {
+  --sky-top: #8fd6ff;
+  --sky-bottom: #d6f5ec;
+  --ink: #10233b;
+  --panel: #12294a;
+  --panel-2: #1b3a63;
+  --paper: #ffffff;
+  --muted: #c7d6ea;
+  --correct: #1f9d55;
+  --wrong: #d63b3b;
+  --gold: #f5a623;
+  --grape: #7c4dff;
+  --radius: 18px;
+  --radius-lg: 26px;
+  --shadow: 0 10px 30px rgba(10, 25, 60, 0.28);
+  --font: "Segoe UI Rounded", "SF Pro Rounded", ui-rounded, "Nunito", "Trebuchet MS", system-ui, sans-serif;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  height: 100%;
+}
+
+body {
+  font-family: var(--font);
+  background: #0b1830; /* letterbox bars around the canvas on tall screens */
+  color: var(--ink);
+  overflow: hidden;
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* The boolean `hidden` attribute must win over the layout display values below. */
+[hidden] {
+  display: none !important;
+}
+
+#app {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+#game {
+  position: absolute;
+  inset: 0;
+}
+
+/* The canvas handles its own drags, so the browser shouldn't scroll/zoom on it. */
+#game canvas {
+  touch-action: none;
+}
+
+/* Overlay lets pointer events fall through to the canvas, except on real controls. */
+#ui {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+#ui .iconbtn,
+#ui .btn,
+#ui .topic,
+#ui .screen {
+  pointer-events: auto;
+}
+
+/* ── HUD ──────────────────────────────────────────────────────────────────── */
+
+.hud {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 12px 14px;
+}
+
+.hud__center {
+  flex: 1;
+  text-align: center;
+}
+
+.hud__right {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.stat {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-width: 62px;
+  padding: 8px 12px;
+  border-radius: var(--radius);
+  background: rgba(10, 25, 55, 0.72);
+  color: #fff;
+  backdrop-filter: blur(4px);
+}
+
+.stat__label {
+  font-size: 12px;
+  color: var(--muted);
+}
+
+.stat__value {
+  font-size: 26px;
+  font-weight: 800;
+  line-height: 1;
+}
+
+.hearts {
+  font-size: 20px;
+  letter-spacing: 2px;
+  min-height: 24px;
+}
+
+.round {
+  display: inline-block;
+  padding: 6px 14px;
+  border-radius: 999px;
+  background: var(--gold);
+  color: #3a2500;
+  font-size: 18px;
+  font-weight: 800;
+}
+
+.goal {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 8px;
+  margin-top: 6px;
+  font-size: 14px;
+  font-weight: 700;
+}
+
+.goal__catch,
+.goal__avoid {
+  padding: 4px 10px;
+  border-radius: 999px;
+  color: #fff;
+}
+
+.goal__catch {
+  background: rgba(31, 157, 85, 0.95);
+}
+
+.goal__avoid {
+  background: rgba(214, 59, 59, 0.95);
+}
+
+.iconbtn {
+  width: 46px;
+  height: 46px;
+  display: grid;
+  place-items: center;
+  border: none;
+  border-radius: 50%;
+  background: rgba(10, 25, 55, 0.72);
+  color: #fff;
+  font-size: 20px;
+  cursor: pointer;
+}
+
+.iconbtn:hover {
+  background: rgba(10, 25, 55, 0.92);
+}
+
+/* ── Buttons ──────────────────────────────────────────────────────────────── */
+
+.btn {
+  font-family: inherit;
+  font-size: 18px;
+  font-weight: 800;
+  min-height: 52px;
+  padding: 14px 22px;
+  border: 3px solid transparent;
+  border-radius: var(--radius);
+  background: #e9f0fb;
+  color: var(--ink);
+  cursor: pointer;
+  transition: transform 0.12s ease, background 0.12s ease;
+}
+
+.btn:hover {
+  transform: translateY(-1px);
+}
+
+.btn--primary {
+  background: var(--gold);
+  color: #3a2400;
+}
+
+/* Clear, high-contrast focus rings for keyboard users. */
+:focus-visible {
+  outline: 4px solid var(--grape);
+  outline-offset: 3px;
+}
+.iconbtn:focus-visible,
+.btn:focus-visible,
+.topic:focus-visible {
+  outline: 4px solid #ffd166;
+  outline-offset: 3px;
+}
+
+/* ── Screens (menu / results / paused) ────────────────────────────────────── */
+
+.screen {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+}
+
+.screen--dim {
+  background: rgba(6, 16, 36, 0.6);
+  backdrop-filter: blur(3px);
+}
+
+.card {
+  position: relative;
+  width: min(560px, 92vw);
+  padding: 28px 26px;
+  border-radius: var(--radius-lg);
+  background: linear-gradient(180deg, var(--panel-2), var(--panel));
+  color: var(--paper);
+  box-shadow: var(--shadow);
+  text-align: center;
+}
+
+.card--small {
+  width: min(360px, 90vw);
+}
+
+.title {
+  margin: 0 0 10px;
+  font-size: clamp(26px, 5vw, 40px);
+  font-weight: 800;
+  letter-spacing: -0.01em;
+}
+
+.lede {
+  max-width: 44ch;
+  margin: 0 auto 20px;
+  color: var(--muted);
+  font-size: clamp(15px, 2.4vw, 17px);
+  line-height: 1.5;
+}
+
+.lede b {
+  color: #fff;
+}
+
+/* Topic picker */
+.topics {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  gap: 12px;
+}
+
+.topic {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  min-height: 96px;
+  padding: 18px 14px;
+  border: 3px solid rgba(255, 255, 255, 0.12);
+  border-radius: var(--radius);
+  background: rgba(255, 255, 255, 0.06);
+  color: #fff;
+  font-family: inherit;
+  cursor: pointer;
+  transition: transform 0.12s ease, border-color 0.12s ease, background 0.12s ease;
+}
+
+.topic:hover {
+  transform: translateY(-2px);
+  border-color: var(--gold);
+  background: rgba(255, 255, 255, 0.12);
+}
+
+.topic__icon {
+  font-size: 34px;
+}
+
+.topic__name {
+  font-size: 17px;
+  font-weight: 800;
+}
+
+/* Results */
+.bigscore {
+  font-size: clamp(44px, 10vw, 68px);
+  font-weight: 800;
+  color: var(--gold);
+  line-height: 1;
+}
+
+.bigscore__unit {
+  margin-left: 8px;
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--muted);
+}
+
+.accuracy {
+  margin: 8px 0 16px;
+  font-size: 20px;
+  font-weight: 800;
+}
+
+.breakdown {
+  display: inline-flex;
+  flex-direction: column;
+  gap: 8px;
+  margin: 0 auto 22px;
+  padding: 0;
+  text-align: left;
+  list-style: none;
+  color: var(--muted);
+  font-size: 16px;
+}
+
+.breakdown b {
+  color: #fff;
+}
+
+.bd-icon {
+  display: inline-block;
+  width: 1.5em;
+  font-weight: 800;
+  color: #fff;
+}
+
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 12px;
+}
+
+/* ── Toast feedback ───────────────────────────────────────────────────────── */
+
+.toast {
+  position: absolute;
+  top: 96px;
+  left: 50%;
+  transform: translateX(-50%);
+  max-width: 80vw;
+  padding: 10px 18px;
+  border: 3px solid transparent;
+  border-radius: 999px;
+  background: rgba(10, 25, 55, 0.92);
+  color: #fff;
+  font-size: 16px;
+  font-weight: 800;
+  text-align: center;
+  box-shadow: var(--shadow);
+}
+
+.toast--good {
+  border-color: var(--correct);
+}
+
+.toast--bad {
+  border-color: var(--wrong);
+}
+
+/* ── Confetti (win celebration) ───────────────────────────────────────────── */
+
+.confetti {
+  position: absolute;
+  top: 18px;
+  left: 50%;
+  width: 0;
+  height: 0;
+  pointer-events: none;
+}
+
+.confetti-bit {
+  position: absolute;
+  left: 0;
+  top: 0;
+  font-size: 26px;
+  will-change: transform, opacity;
+}
+
+/* ── Reduced motion (belt-and-suspenders; GSAP is already guarded) ─────────── */
+
+@media (prefers-reduced-motion: reduce) {
+  .btn,
+  .topic {
+    transition: none;
+  }
+  .btn:hover,
+  .topic:hover {
+    transform: none;
+  }
+}
+
+/* Small screens: tighten the HUD so it doesn't crowd the play area. */
+@media (max-width: 520px) {
+  .stat__value {
+    font-size: 22px;
+  }
+  .round {
+    font-size: 16px;
+  }
+  .goal {
+    font-size: 12px;
+  }
+}

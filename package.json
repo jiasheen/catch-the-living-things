@@ -1,0 +1,21 @@
+{
+  "name": "catch-the-living-things",
+  "private": true,
+  "version": "1.0.0",
+  "type": "module",
+  "description": "A data-driven arcade sorting game for K-12 classrooms, built with Phaser 3, Vite, GSAP and TypeScript.",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc --noEmit && vite build",
+    "preview": "vite preview",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "gsap": "^3.15.0",
+    "phaser": "3.90.0"
+  },
+  "devDependencies": {
+    "typescript": "^7.0.2",
+    "vite": "^8.2.2"
+  }
+}
